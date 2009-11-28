@@ -31,22 +31,26 @@ class ByWhateverTest < Test::Unit::TestCase
     
     context "Post model" do  
       should "respond to :by_user_id" do
-        assert_respond_to User, :by_user_id
+        assert_respond_to Post, :by_user_id
       end
       should "not respond to :by_category_id" do
-        assert_not_respond_to User, :category_id
+        assert !Post.respond_to?( :category_id )
       end
     end
     
     context "Comment model" do  
       should "respond to :by_user_id" do
-        assert_respond_to User, :by_user_id
+        assert Comment.respond_to?( :by_user_id )
       end
+      should "respond to :by_created_at" do
+        puts Comment.scopes.to_yaml
+        assert Comment.respond_to?( :by_created_at )
+      end      
       should "respond to :by_post_id" do
-        assert_not_respond_to User, :by_post_id
+        assert Comment.respond_to?( :by_post_id )
       end
       should "not respond to :by_comment_id" do
-        assert_not_respond_to User, :by_comment_id
+        assert !Comment.respond_to?( :by_comment_id )
       end
       
     end
