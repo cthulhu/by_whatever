@@ -1,0 +1,29 @@
+= By Whatever
+
+Rails AR plugin that generates sexy named scopes for models
+
+I often need to add such named scopes as by_user_id or by_account_id and they 
+always looks the same
+
+named_scope :by_account, lambda { |account_id|
+  (account_id.blank?) ? {} : { :conditions => ['account_id = ?', account_id.to_i] }
+}
+
+So, By Whatever  simply adds scopes for all foreight keys from model, and you 
+don't have to write them all the time.
+
+== Usage
+
+class User < ActiveRecord::Base
+
+  by_whatever [:foreight_keys]
+
+end
+
+== Installation
+
+ruby ./script/plugin install git://github.com/cthulhu/by_whatever.git 
+
+==License 
+
+Copyright (c) 2009 Stanislav O. Pogrebnyak, released under the MIT license.
