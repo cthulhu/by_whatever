@@ -6,7 +6,8 @@ module ByWhatever
 
   module ClassMethods
     # Default options:
-    # :field => :id
+    # :only => [:key1, ... ]
+    # :only => [:key2, ... ]
     def by_whatever options = {}
       
     end
