@@ -14,13 +14,11 @@ module ByWhatever
       model_columns = model_columns.select{|clmn| options[:only].include?( clmn[0].to_sym ) } unless options[:only].blank?
       model_columns = model_columns.select{|clmn| !options[:except].include?( clmn[0].to_sym ) } unless options[:except].blank?
 
-      # puts model_columns.to_yaml
-      
       self.class_eval do 
         unless model_columns.blank?
           model_columns.each do |column|
             named_scope "by_#{column[0]}".to_sym,lambda { |value|
-             (value.blank?) ? {} : { :conditions => sanitize_sql_for_conditions( ['#{column[0]} = ?', value] ) }
+             (value.blank?) ? {} : { :conditions => sanitize_sql_for_conditions( ["#{column[0]} = ?", value] ) }
             }
           end
         end

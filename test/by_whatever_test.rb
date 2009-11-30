@@ -27,6 +27,20 @@ class ByWhateverTest < Test::Unit::TestCase
       should "respond to :by_account_id" do
         assert_respond_to User, :by_account_id
       end
+      context "with some data in the db" do
+        setup do
+          1..4.times do |index|
+            User.create( :account_id => 1, :name => "User_#{index}_from_account_1" )
+          end
+          1..5.times do |index|
+            User.create( :account_id => 2, :name => "User_#{index}_from_account_2" )
+          end
+        end
+        should "return correct numbers due to scopes" do
+          assert User.by_account_id(1).count == 4
+          assert User.by_account_id(2).count == 5
+        end
+      end
     end
     
     context "Post model" do  
@@ -43,7 +57,6 @@ class ByWhateverTest < Test::Unit::TestCase
         assert Comment.respond_to?( :by_user_id )
       end
       should "respond to :by_created_at" do
-        puts Comment.scopes.to_yaml
         assert Comment.respond_to?( :by_created_at )
       end      
       should "respond to :by_post_id" do
