@@ -65,9 +65,19 @@ class ByWhateverTest < Test::Unit::TestCase
       should "not respond to :by_comment_id" do
         assert !Comment.respond_to?( :by_comment_id )
       end
-      
     end
-
+    [Comment, User, Post].each do |model_class|
+      context "#{model_class.to_s} model" do
+        [ 
+          :during_last_minute, :during_last_hour, 
+          :during_last_day, :during_last_week, 
+          :during_last_month 
+        ].each do |scope_name|
+          should "respond_to :#{scope_name.to_s}" do
+            assert model_class.respond_to?( scope_name )
+          end
+        end
+      end
+    end
   end
-  
 end

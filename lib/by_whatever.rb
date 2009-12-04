@@ -21,6 +21,11 @@ module ByWhatever
              (value.blank?) ? {} : { :conditions => sanitize_sql_for_conditions( ["#{column[0]} = ?", value] ) }
             }
           end
+          named_scope :during_last_minute, lambda{{ :conditions => [ 'created_at >= ?', (Time.now.utc - 1.minute ).to_s(:db) ] }}
+          named_scope :during_last_hour,   lambda{{ :conditions => [ 'created_at >= ?', (Time.now.utc - 1.hour ).to_s(:db) ] }}
+          named_scope :during_last_day,    lambda{{ :conditions => [ 'created_at >= ?', (Time.now.utc - 1.day ).to_s(:db) ] }}
+          named_scope :during_last_week,   lambda{{ :conditions => [ 'created_at >= ?', (Time.now.utc - 1.week ).to_s(:db) ] }}
+          named_scope :during_last_month,  lambda{{ :conditions => [ 'created_at >= ?', (Time.now.utc - 1.month ).to_s(:db) ] }}
         end
       end
     end
