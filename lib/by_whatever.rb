@@ -20,6 +20,9 @@ module ByWhatever
             named_scope "by_#{column[0]}".to_sym,lambda { |value|
              (value.blank?) ? {} : { :conditions => sanitize_sql_for_conditions( ["#{column[0]} = ?", value] ) }
             }
+            named_scope "by_#{column[0]}s".to_sym,lambda { |value|
+             (value.blank? || !value.is_a?( Array )) ? {} : { :conditions => sanitize_sql_for_conditions( ["#{column[0]} IN ( ? )", value] ) }
+            }
           end
           named_scope :during_last_minute, lambda{{ :conditions => [ 'created_at >= ?', (Time.now.utc - 1.minute ).to_s(:db) ] }}
           named_scope :during_last_hour,   lambda{{ :conditions => [ 'created_at >= ?', (Time.now.utc - 1.hour ).to_s(:db) ] }}

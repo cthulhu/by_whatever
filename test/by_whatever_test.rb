@@ -39,6 +39,7 @@ class ByWhateverTest < Test::Unit::TestCase
         should "return correct numbers due to scopes" do
           assert User.by_account_id(1).count == 4
           assert User.by_account_id(2).count == 5
+          assert User.by_account_ids([2,1]).count == 9
         end
       end
     end
