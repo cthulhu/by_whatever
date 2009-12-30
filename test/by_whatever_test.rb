@@ -22,6 +22,11 @@ class ByWhateverTest < Test::Unit::TestCase
     by_whatever :except => [:comment_id]
   end
   
+  class Votes < ActiveRecord::Base
+    by_whatever 
+  end
+
+  
   context "With applied by_whatever" do  
     context "User model" do  
       should "respond to :by_account_id" do

@@ -9,8 +9,14 @@ module ByWhatever
     # :only   => [:key1, ... ]
     # :except => [:key2, ... ]
     def by_whatever options = {}
-      model_columns = self.columns.map{|clmn| [clmn.name, clmn.type]}
-      
+      # This exeptions throw when table is not constructed yet
+      begin 
+        model_columns = self.columns.map{|clmn| [clmn.name, clmn.type]}
+      rescue => e
+        self.logger.info "By Whatever exception: #{e.to_s}"
+        self.logger.info e.backtrace
+      end
+
       model_columns = model_columns.select{|clmn| options[:only].include?( clmn[0].to_sym ) } unless options[:only].blank?
       model_columns = model_columns.select{|clmn| !options[:except].include?( clmn[0].to_sym ) } unless options[:except].blank?
 
