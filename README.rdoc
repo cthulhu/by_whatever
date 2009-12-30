@@ -5,9 +5,16 @@ Rails AR plugin that generates sexy named scopes for models
 I often need to add such named scopes as by_user_id or by_account_id and they 
 always looks the same
 
-  named_scope :by_account, lambda { |account_id|
+  named_scope :by_account_id, lambda { |account_id|
     (account_id.blank?) ? {} : { :conditions => ['account_id = ?', account_id.to_i] }
   }
+
+AND
+
+  named_scope :by_account_ids, lambda { |account_ids|
+    (account_id.blank?) ? {} : { :conditions => ['account_id IN ( ? )', account_ids] }
+  }
+
 
 So, By Whatever  simply adds scopes for all foreight keys from model, and you 
 don't have to write them all the time.
