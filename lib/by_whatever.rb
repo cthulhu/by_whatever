@@ -12,6 +12,7 @@ module ByWhatever
       # This exeptions throw when table is not constructed yet
       begin 
         model_columns = self.columns.map{|clmn| [clmn.name, clmn.type]}
+        table_name = self.table_name
       rescue => e
         self.logger.info "By Whatever exception: #{e.to_s}"
         self.logger.info e.backtrace
@@ -24,10 +25,10 @@ module ByWhatever
         unless model_columns.blank?
           model_columns.each do |column|
             named_scope "by_#{column[0]}".to_sym,lambda { |value|
-             (value.blank?) ? {} : { :conditions => sanitize_sql_for_conditions( ["#{column[0]} = ?", value] ) }
+             (value.blank?) ? {} : { :conditions => sanitize_sql_for_conditions( ["#{table_name}.#{column[0]} = ?", value] ) }
             }
             named_scope "by_#{column[0]}s".to_sym,lambda { |value|
-             (value.blank? || !value.is_a?( Array )) ? {} : { :conditions => sanitize_sql_for_conditions( ["#{column[0]} IN ( ? )", value] ) }
+             (value.blank? || !value.is_a?( Array )) ? {} : { :conditions => sanitize_sql_for_conditions( ["#{table_name}.#{column[0]} IN ( ? )", value] ) }
             }
           end
           named_scope :during_last_minute, lambda{{ :conditions => [ 'created_at >= ?', (Time.now.utc - 1.minute ).to_s(:db) ] }}
